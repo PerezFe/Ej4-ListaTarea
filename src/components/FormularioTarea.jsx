@@ -10,8 +10,12 @@ const FormularioTarea = () => {
     e.preventDefault();
     setArregloTarea([...arregloTarea, tarea]);
     setTarea("");
-
   };
+
+  const borrarTarea = (nombre)=> {
+    let arregloModificado = arregloTarea.filter((item)=>(item !== nombre))
+    setArregloTarea(arregloModificado)
+  }
 
   return (
     <div>
@@ -28,7 +32,7 @@ const FormularioTarea = () => {
           </Button>
         </Form.Group>
       </Form>
-      <ListaTarea propsArregloTarea={arregloTarea} ></ListaTarea>
+      <ListaTarea propsArregloTarea={arregloTarea} borrarTarea={borrarTarea}></ListaTarea>
     </div>
   );
 };

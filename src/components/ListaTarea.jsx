@@ -3,13 +3,13 @@ import ItemTarea from './ItemTarea';
 import {ListGroup, button} from 'react-bootstrap';
 
 
-const ListaTarea = ({propsArregloTarea}) => {
+const ListaTarea = ({propsArregloTarea, borrarTarea}) => {
 
 
     return (
         <ListGroup>
             {
-                propsArregloTarea.map( (tarea, posicion)=> <ItemTarea key={posicion} nombreTarea={tarea}></ItemTarea>)
+                propsArregloTarea.map( (tarea, posicion)=> <ItemTarea key={posicion} nombreTarea={tarea} borrarTarea={borrarTarea}></ItemTarea>)
             }
       
     </ListGroup>
