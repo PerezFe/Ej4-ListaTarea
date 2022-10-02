@@ -1,10 +1,13 @@
 import React from 'react';
+import ItemTarea from './ItemTarea';
+import {ListGroup, button} from 'react-bootstrap';
+
 
 const ListaTarea = () => {
     return (
-        <div>
-            aqui va la lista
-        </div>
+        <ListGroup>
+      <ItemTarea></ItemTarea>
+    </ListGroup>
     );
 };
 

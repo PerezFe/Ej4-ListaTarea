@@ -1,10 +1,8 @@
-import React from 'react';
+import { Button, ListGroup } from "react-bootstrap";
 
 const ItemTarea = () => {
     return (
-        <div>
-            esto es un item
-        </div>
+        <ListGroup.Item className="d-flex justify-content-between">Tarea de prueba <Button variant="danger">Borrar</Button></ListGroup.Item>
     );
 };
 
