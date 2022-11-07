@@ -1,6 +1,6 @@
 import React from 'react';
 import ItemTarea from './ItemTarea';
-import {ListGroup, button} from 'react-bootstrap';
+import {ListGroup, } from 'react-bootstrap';
 
 
 const ListaTarea = ({propsArregloTarea, borrarTarea}) => {
