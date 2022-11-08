@@ -1,38 +1,77 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ListaTarea from "./ListaTarea";
 import { Button, Form } from "react-bootstrap";
+import { consultarAPI, crearTareaAPI } from "./helpers/queries";
+import { useForm } from "react-hook-form";
 
 const FormularioTarea = () => {
-  const [tarea, setTarea] = useState("");
-  const [arregloTarea, setArregloTarea] = useState([]);
+  const [tarea, setTarea] = useState([]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setArregloTarea([...arregloTarea, tarea]);
-    setTarea("");
+  useEffect(() => {
+    consultarAPI().then((respuesta) => {
+      setTarea(respuesta);
+    });
+  }, []);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      nombreTarea: "",
+    },
+  });
+
+  const onSubmit = (datos) => {
+    crearTareaAPI(datos).then((respuesta) => {
+      if (respuesta.status === 201) {
+        reset();
+        consultarAPI().then((respuesta) => {
+          setTarea(respuesta);
+        });
+      } else {
+        console.log("la tarea no ha sido creada")
+      }
+    });
   };
-
-  const borrarTarea = (nombre)=> {
-    let arregloModificado = arregloTarea.filter((item)=>(item !== nombre))
-    setArregloTarea(arregloModificado)
-  }
 
   return (
     <div>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3 d-flex" controlId="formBasicEmail">
-          <Form.Control
-            type="text"
-            placeholder="Ingrese una tarea"
-            onChange={(e) => setTarea(e.target.value)}
-            value={tarea}
-          />
-          <Button variant="primary" type="submit">
-            Enviar
-          </Button>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form.Group
+          className="mb-3 row justify-content-center"
+          controlId="formBasicEmail"
+        >
+          <aside className="col-sm-12 col-md-4 col-lg-10">
+            <Form.Control
+              type="text"
+              placeholder="Ingrese una tarea"
+              {...register("tarea", {
+                required: "Este dato es obligatorio",
+                minLength: {
+                  value: 2,
+                  message: "Debe ingresar como minimo 2 caracteres",
+                },
+                maxLength: {
+                  value: 50,
+                  message: "Debe ingresar como maximo 50 caracteres",
+                },
+              })}
+            />
+            <Form.Text className="text-danger">
+              {errors.nombreTarea?.message}
+            </Form.Text>
+          </aside>
+          <aside className="col-sm-12 col-md-4 col-lg-2">
+            <Button variant="warning" type="submit">
+              Enviar
+            </Button>
+          </aside>
         </Form.Group>
       </Form>
-      <ListaTarea propsArregloTarea={arregloTarea} borrarTarea={borrarTarea}></ListaTarea>
+      <ListaTarea tarea={tarea} setTarea={setTarea}></ListaTarea>
     </div>
   );
 };
